@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) YelpClient *client;
 @property (nonatomic, strong) NSMutableArray *businessArray;
+@property (nonatomic, strong) NSArray *searchResults;
 @end
 
 @implementation MainViewController
@@ -56,6 +57,8 @@
     
     UINib *tableViewNib = [UINib nibWithNibName:@"TableViewCell" bundle:nil];
     [self.tableView registerNib:tableViewNib forCellReuseIdentifier:@"TableViewCell"];
+
+    [self.searchDisplayController.searchResultsTableView registerNib:tableViewNib forCellReuseIdentifier:@"TableViewCell"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -64,17 +67,52 @@
     // Dispose of any resources that can be recreated.
 }
 - (NSInteger) tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.businessArray.count;
+    
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        return [self.searchResults count];
+        
+    } else {
+        return [self.businessArray count];
+        
+    }
 }
 
 - (UITableViewCell *) tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     TableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TableViewCell" forIndexPath:indexPath];
     
-    NSDictionary *business = self.businessArray[indexPath.row];
-    cell.row = business;
+    NSDictionary *business;
+    
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        business = self.searchResults[indexPath.row];
+    } else {
+        business = self.businessArray[indexPath.row];
+    }
     
     NSLog(@"row: %@", business);
+    cell.row = business;
     
     return cell;
 }
+
+- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope
+{
+    NSPredicate *resultPredicate = [NSPredicate
+                                    predicateWithFormat:@"SELF.name   contains[cd] %@",
+                                    searchText];
+    
+    self.searchResults = [self.businessArray filteredArrayUsingPredicate:resultPredicate];
+}
+
+-(BOOL)searchDisplayController:(UISearchDisplayController *)controller
+shouldReloadTableForSearchString:(NSString *)searchString
+{
+    [self filterContentForSearchText:searchString
+                               scope:[[self.searchDisplayController.searchBar scopeButtonTitles]
+                                      objectAtIndex:[self.searchDisplayController.searchBar
+                                                     selectedScopeButtonIndex]]];
+    
+    return YES;
+}
+
 @end
