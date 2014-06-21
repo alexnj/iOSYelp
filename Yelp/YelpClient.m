@@ -7,16 +7,19 @@
 //
 
 #import "YelpClient.h"
+#import "YelpApiSecrets.h"
 
 @implementation YelpClient
 
-- (id)initWithConsumerKey:(NSString *)consumerKey consumerSecret:(NSString *)consumerSecret accessToken:(NSString *)accessToken accessSecret:(NSString *)accessSecret {
+- (id)init {
     NSURL *baseURL = [NSURL URLWithString:@"http://api.yelp.com/v2/"];
-    self = [super initWithBaseURL:baseURL consumerKey:consumerKey consumerSecret:consumerSecret];
+    self = [super initWithBaseURL:baseURL consumerKey:kYelpConsumerKey consumerSecret:kYelpConsumerSecret];
+    
     if (self) {
-        BDBOAuthToken *token = [BDBOAuthToken tokenWithToken:accessToken secret:accessSecret expiration:nil];
+        BDBOAuthToken *token = [BDBOAuthToken tokenWithToken:kYelpToken secret:kYelpTokenSecret expiration:nil];
         [self.requestSerializer saveAccessToken:token];
     }
+
     return self;
 }
 

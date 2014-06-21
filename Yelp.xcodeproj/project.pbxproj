@@ -36,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		38883DEE195618F5002D5864 /* YelpApiSecrets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YelpApiSecrets.h; sourceTree = "<group>"; };
 		420474F418DC299500E88E07 /* YelpClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YelpClient.h; sourceTree = "<group>"; };
 		420474F518DC299500E88E07 /* YelpClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YelpClient.m; sourceTree = "<group>"; };
 		420474F818DC2B2100E88E07 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
@@ -91,6 +92,7 @@
 			children = (
 				420474F418DC299500E88E07 /* YelpClient.h */,
 				420474F518DC299500E88E07 /* YelpClient.m */,
+				38883DEE195618F5002D5864 /* YelpApiSecrets.h */,
 			);
 			name = API;
 			sourceTree = "<group>";
