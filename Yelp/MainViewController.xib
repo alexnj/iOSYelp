@@ -6,6 +6,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MainViewController">
             <connections>
+                <outlet property="searchBar" destination="8Vf-f6-PrW" id="cxx-XI-uUL"/>
                 <outlet property="searchDisplayController" destination="Wsw-SA-cYi" id="upN-to-O0P"/>
                 <outlet property="tableView" destination="VQi-WU-Zew" id="07b-Eb-4wB"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -20,14 +21,6 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <searchBar key="tableHeaderView" contentMode="redraw" id="8Vf-f6-PrW">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                        <textInputTraits key="textInputTraits"/>
-                        <connections>
-                            <outlet property="delegate" destination="-1" id="aH1-N0-cCP"/>
-                        </connections>
-                    </searchBar>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="XCA-KX-Xp2"/>
                         <outlet property="delegate" destination="-1" id="rHC-6I-3pU"/>
@@ -53,5 +46,13 @@
                 <outlet property="searchResultsDelegate" destination="-1" id="A67-mk-xn1"/>
             </connections>
         </searchDisplayController>
+        <searchBar contentMode="redraw" id="8Vf-f6-PrW">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+            <textInputTraits key="textInputTraits"/>
+            <connections>
+                <outlet property="delegate" destination="-1" id="aH1-N0-cCP"/>
+            </connections>
+        </searchBar>
     </objects>
 </document>

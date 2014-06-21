@@ -11,6 +11,7 @@
 #import "YelpClient.h"
 
 @interface MainViewController ()
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) YelpClient *client;
 @property (nonatomic, strong) NSMutableArray *businessArray;
@@ -43,6 +44,20 @@
     
 }
 
+- (void)showFilerView {
+    
+}
+
+- (void)addFilterButton {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button addTarget:self action:@selector(showFilerView) forControlEvents:UIControlEventTouchUpInside];
+    [button setTitle:@"Filter" forState:UIControlStateNormal];
+    button.frame = CGRectMake(80.0, 10.0, 60.0, 40.0);
+    
+    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+    [self.navigationItem setLeftBarButtonItem:backItem];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -50,11 +65,13 @@
     // Point table view data source and delegates to this class itself.
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
-    
     self.tableView.rowHeight = 95;
     
     [self loadData];
     
+    self.searchDisplayController.displaysSearchBarInNavigationBar = YES;
+    [self addFilterButton];
+
     UINib *tableViewNib = [UINib nibWithNibName:@"TableViewCell" bundle:nil];
     [self.tableView registerNib:tableViewNib forCellReuseIdentifier:@"TableViewCell"];
 
