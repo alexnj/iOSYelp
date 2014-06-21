@@ -9,13 +9,24 @@
 #import "AppDelegate.h"
 #import "MainViewController.h"
 
+#define UIColorFromRGB(rgbValue) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0]
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+
+    MainViewController *vc = [[MainViewController alloc] init];
+    UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:vc];
     
-    self.window.rootViewController = [[MainViewController alloc] init];
+    [[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(0xCF1806)];
+    
+    [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                           [UIColor colorWithRed:32.0/255.0 green:139.0/255.0 blue:254.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
+                                                           [UIFont fontWithName:@"Arial" size:21.0], NSFontAttributeName, nil]];
+
+    self.window.rootViewController = nvc;
     
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
