@@ -2,8 +2,8 @@
 //  MainViewController.m
 //  Yelp
 //
-//  Created by Timothy Lee on 3/21/14.
-//  Copyright (c) 2014 codepath. All rights reserved.
+//  Created by Alex on 6/21/14.
+//  Copyright (c) 2014 alexnj. All rights reserved.
 //
 
 #import "MainViewController.h"
