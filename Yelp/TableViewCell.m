@@ -34,6 +34,8 @@
 - (void)setRow:(NSDictionary *)row {
     self.title.text = row[@"name"];
     self.address.text = row[@"location"][@"address"][0];
+    self.distance.text = [NSString stringWithFormat:@"%@", row[@"review_count"]];
+    self.expense.text = @"";
     
     [NSURLConnection sendAsynchronousRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:row[@"image_url"]]] queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         
