@@ -65,6 +65,7 @@
     // Point table view data source and delegates to this class itself.
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
     self.tableView.rowHeight = 95;
     
     [self loadData];

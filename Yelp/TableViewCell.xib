@@ -70,6 +70,7 @@
                     <constraint firstItem="duV-XH-ajp" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="2Ff-oe-VQB"/>
                     <constraint firstItem="ydE-UL-YWe" firstAttribute="leading" secondItem="JdU-L3-ZW2" secondAttribute="trailing" constant="8" id="3fq-Iq-RlN"/>
                     <constraint firstItem="duV-XH-ajp" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="DMB-Vj-US9"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="duV-XH-ajp" secondAttribute="bottom" constant="8" id="LBz-88-Whr"/>
                     <constraint firstItem="JdU-L3-ZW2" firstAttribute="leading" secondItem="duV-XH-ajp" secondAttribute="trailing" constant="8" symbolic="YES" id="ORI-Jp-wTA"/>
                     <constraint firstItem="zaW-B3-lZB" firstAttribute="leading" secondItem="pq3-RI-QEC" secondAttribute="trailing" constant="8" id="Ri9-o3-jdD"/>
                     <constraint firstAttribute="trailing" secondItem="zaW-B3-lZB" secondAttribute="trailing" constant="10" id="Tho-0S-0kR"/>
@@ -78,7 +79,7 @@
                     <constraint firstAttribute="trailing" secondItem="ydE-UL-YWe" secondAttribute="trailing" constant="10" id="hny-kT-fRD"/>
                     <constraint firstItem="pq3-RI-QEC" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="mBm-Ng-LZI"/>
                     <constraint firstItem="zbn-gZ-VdM" firstAttribute="top" secondItem="pq3-RI-QEC" secondAttribute="bottom" constant="2" id="rlJ-KI-NLG"/>
-                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="JdU-L3-ZW2" secondAttribute="bottom" constant="5" id="tod-qI-XF1"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="JdU-L3-ZW2" secondAttribute="bottom" constant="8" id="tod-qI-XF1"/>
                     <constraint firstItem="JdU-L3-ZW2" firstAttribute="top" secondItem="zbn-gZ-VdM" secondAttribute="bottom" constant="2" id="w21-dG-zSG"/>
                     <constraint firstItem="zaW-B3-lZB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="wxR-gY-BgU"/>
                 </constraints>
