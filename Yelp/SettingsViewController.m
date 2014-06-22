@@ -91,9 +91,25 @@ typedef enum { Switch, Dropdown } SettingUIType;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _options = @[
-                     @{ @"key": @0, @"caption": @"Best matched (default)" },
-                     @{ @"key": @1, @"caption": @"Distance" },
-                     @{ @"key": @2, @"caption": @"Highest rated" }
+                     @{ @"key": @"0", @"caption": @"Best matched (default)" },
+                     @{ @"key": @"1", @"caption": @"Distance" },
+                     @{ @"key": @"2", @"caption": @"Highest rated" }
+                     ];
+    });
+    return _options;
+}
+
++ (NSArray *)distanceOptions
+{
+    static NSArray* _options;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _options = @[
+                     @{ @"key": @"", @"caption": @"Auto" },
+                     @{ @"key": @"300", @"caption": @"0.3 miles" },
+                     @{ @"key": @"1000", @"caption": @"1 mile" },
+                     @{ @"key": @"5000", @"caption": @"5 miles" },
+                     @{ @"key": @"20000", @"caption": @"20 miles" }
                      ];
     });
     return _options;
@@ -103,7 +119,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
     NSInteger count = 0;
     
     if ([key isEqualToString:@"radius"]) {
-        count = [[self class] sortOptions].count;
+        count = [[self class] distanceOptions].count;
     }
     
     if ([key isEqualToString:@"sort"]) {
@@ -121,7 +137,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
     NSArray* options = @[];
     
     if ([key isEqualToString:@"radius"]) {
-        options = [[self class] sortOptions];
+        options = [[self class] distanceOptions];
     }
     
     if ([key isEqualToString:@"sort"]) {
@@ -258,7 +274,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
             // Collapsed stage. Show current setting.
             if( [self.defaults objectForKey:settingKey] != nil){
                 for(NSDictionary* optionPair in options) {
-                    if ([optionPair[@"key"] isEqualToNumber:[self.defaults objectForKey:settingKey]]) {
+                    if ([optionPair[@"key"] isEqualToString:[self.defaults objectForKey:settingKey]]) {
                         NSLog(@"Selected option resurface %@", optionPair);
                         cell.textLabel.text = optionPair[@"caption"];
                         
@@ -271,7 +287,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
         else {
             cell.textLabel.text = options[indexPath.row][@"caption"];
             if( [self.defaults objectForKey:settingKey] != nil){
-                if ([options[indexPath.row][@"key"] isEqualToNumber:[self.defaults objectForKey:settingKey]]) {
+                if ([options[indexPath.row][@"key"] isEqualToString:[self.defaults objectForKey:settingKey]]) {
                     cell.accessoryView = nil;
                     cell.accessoryType = UITableViewCellAccessoryCheckmark;
                 }
