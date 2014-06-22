@@ -3,14 +3,17 @@
 //  Yelp
 //
 //  Created by Alex on 6/21/14.
-//  Copyright (c) 2014 codepath. All rights reserved.
+//  Copyright (c) 2014 alexnj. All rights reserved.
 //
 
 #import "SettingsViewController.h"
 
+typedef enum { Expando, Switch, Dropdown } SettingUIType;
+
 @interface SettingsViewController ()
 @property (strong, nonatomic) IBOutlet UITableViewCell *cellTypeSegmented;
 @property (strong, nonatomic) IBOutlet UITableViewCell *cellTypeSwitch;
+@property (strong, nonatomic) NSArray *settingSections;
 @end
 
 @implementation SettingsViewController
@@ -27,7 +30,46 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    
+    self.settingSections = @[
+                                @{
+                                        @"caption": @"Category",
+                                        @"settings": @[
+                                                @{
+                                                    @"key": @"category",
+                                                    @"type": @(Expando)
+                                                    }
+                                        ],
+                                        },
+                                @{
+                                        @"caption": @"Sort",
+                                        @"settings": @[
+                                                @{
+                                                    @"key": @"sort",
+                                                    @"type": @(Dropdown)
+                                                    }
+                                                ]
+                                        },
+                                @{
+                                    @"caption": @"Radius",
+                                    @"settings": @[
+                                            @{
+                                                @"key": @"radius",
+                                                @"type": @(Dropdown)
+                                                }
+                                            ]
+                                    },
+                                @{
+                                    @"caption": @"General features",
+                                    @"settings": @[
+                                            @{
+                                                @"key": @"deals",
+                                                @"caption": @"Deals",
+                                                @"type": @(Switch)
+                                                }
+                                            ]
+                                    }
+                                ];
 }
 
 - (void)didReceiveMemoryWarning
@@ -37,17 +79,28 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) return self.cellTypeSegmented;
-    if (indexPath.row == 1) return self.cellTypeSwitch;
+    NSDictionary* setting = self.settingSections[indexPath.section][@"settings"][indexPath.row];
+    NSNumber* settingType = setting[@"type"];
+    switch ([settingType intValue]) {
+        case Switch:
+            return self.cellTypeSwitch;
+            break;
+    }
+    return self.cellTypeSegmented;
     return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 2;
+    NSArray* settings = self.settingSections[section][@"settings"];
+    return settings.count;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return self.settingSections.count;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return self.settingSections[section][@"caption"];
 }
 
 @end
