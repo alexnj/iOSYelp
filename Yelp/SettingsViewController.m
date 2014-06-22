@@ -94,34 +94,33 @@ typedef enum { Switch, Dropdown } SettingUIType;
 
         // Is this the first row that was selected?
         if (!indexPath.row) {
+            NSInteger section = indexPath.section;
         
             // only first row toggles exapand/collapse
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             
-            NSInteger section = indexPath.section;
-            BOOL isCurrentlyExpanded = [self.expandedSections containsIndex:section];
+            // Calculate final number of rows depending on current state.
             NSInteger rows;
-            
-            NSMutableArray *tmpArray = [NSMutableArray array];
-            
+            BOOL isCurrentlyExpanded = [self.expandedSections containsIndex:section];
             if (isCurrentlyExpanded) {
                 rows = [self tableView:tableView numberOfRowsInSection:section];
                 [self.expandedSections removeIndex:section];
-                
             }
             else {
                 [self.expandedSections addIndex:section];
                 rows = [self tableView:tableView numberOfRowsInSection:section];
             }
             
+            // Prepare row indices for insertion (expansion).
+            NSMutableArray *tmpArray = [NSMutableArray array];
             for (int i=1; i<rows; i++) {
-                NSIndexPath *tmpIndexPath = [NSIndexPath indexPathForRow:i
-                                                               inSection:section];
+                NSIndexPath *tmpIndexPath = [NSIndexPath indexPathForRow:i inSection:section];
                 [tmpArray addObject:tmpIndexPath];
             }
             
             UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
             
+            // Expand or remove rows as necessary.
             if (isCurrentlyExpanded) {
                 [tableView deleteRowsAtIndexPaths:tmpArray
                                  withRowAnimation:UITableViewRowAnimationTop];
@@ -156,8 +155,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
     }
     
     if ([self tableView:tableView canCollapseSection:indexPath.section]) {
-        if (!indexPath.row)
-        {
+        if (!indexPath.row) {
             // First row.
             cell.textLabel.text = @"Expandable";
             cell.accessoryView = nil;
@@ -168,8 +166,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
             cell.textLabel.text = @"Some Detail";
         }
     }
-    else
-    {
+    else {
         cell.accessoryView = nil;
         cell.textLabel.text = @"Normal Cell";
         
@@ -187,7 +184,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
             return [count unsignedIntValue];
         }
 
-        return 1; // only selected row showing
+        return 1; // Show only first row when collapsed (current setting).
     }
     
     NSArray* settings = self.settingSections[section][@"settings"];
