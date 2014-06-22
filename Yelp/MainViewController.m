@@ -9,6 +9,7 @@
 #import "MainViewController.h"
 #import "TableViewCell.h"
 #import "YelpClient.h"
+#import "SettingsViewController.h"
 
 @interface MainViewController ()
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
@@ -45,7 +46,8 @@
 }
 
 - (void)showFilerView {
-    
+    SettingsViewController *svc = [[SettingsViewController alloc] init];
+    [self.navigationController pushViewController:svc animated:YES];
 }
 
 - (void)addFilterButton {
