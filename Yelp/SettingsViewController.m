@@ -42,8 +42,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
                                         @"settings": @[
                                                 @{
                                                     @"key": @"category",
-                                                    @"type": @(Dropdown),
-                                                    @"count": @(2)
+                                                    @"type": @(Dropdown)
                                                     }
                                         ],
                                         },
@@ -52,8 +51,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
                                         @"settings": @[
                                                 @{
                                                     @"key": @"sort",
-                                                    @"type": @(Dropdown),
-                                                    @"count": @(5)
+                                                    @"type": @(Dropdown)
                                                     }
                                                 ]
                                         },
@@ -62,8 +60,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
                                     @"settings": @[
                                             @{
                                                 @"key": @"radius",
-                                                @"type": @(Dropdown),
-                                                @"count": @(4)
+                                                @"type": @(Dropdown)
                                                 }
                                             ]
                                     },
@@ -86,6 +83,55 @@ typedef enum { Switch, Dropdown } SettingUIType;
     // Dispose of any resources that can be recreated.
 }
 
++ (NSArray *)sortOptions
+{
+    static NSArray* _options;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _options = @[
+                     @{ @"key": @0, @"caption": @"Best matched (default)" },
+                     @{ @"key": @1, @"caption": @"Distance" },
+                     @{ @"key": @2, @"caption": @"Highest rated" }
+                     ];
+    });
+    return _options;
+}
+
+- (NSInteger)countDropdownOptionsBySettingKey: (NSString*)key {
+    NSInteger count = 0;
+    
+    if ([key isEqualToString:@"radius"]) {
+        count = [[self class] sortOptions].count;
+    }
+    
+    if ([key isEqualToString:@"sort"]) {
+        count = [[self class] sortOptions].count;
+    }
+    
+    if ([key isEqualToString:@"category"]) {
+        count = [[self class] sortOptions].count;
+    }
+    
+    return count;
+}
+
+- (NSArray*)dropdownOptionsBySettingKey: (NSString*)key {
+    NSArray* options = @[];
+    
+    if ([key isEqualToString:@"radius"]) {
+        options = [[self class] sortOptions];
+    }
+    
+    if ([key isEqualToString:@"sort"]) {
+        options = [[self class] sortOptions];
+    }
+    
+    if ([key isEqualToString:@"category"]) {
+        options = [[self class] sortOptions];
+    }
+    
+    return options;
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -154,16 +200,19 @@ typedef enum { Switch, Dropdown } SettingUIType;
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
+    // Get options list for this setting.
+    // Zero'th index because expansion sections don't intend to
+    // include multiple settings within a section.
+    NSDictionary* setting = self.settingSections[indexPath.section][@"settings"][0];
+    NSString* settingKey = setting[@"key"];
+    NSArray* options = [self dropdownOptionsBySettingKey:settingKey];
+    
     if ([self tableView:tableView canCollapseSection:indexPath.section]) {
+        cell.textLabel.text = options[indexPath.row][@"caption"];
         if (!indexPath.row) {
             // First row.
-            cell.textLabel.text = @"Expandable";
             cell.accessoryView = nil;
-            cell.accessoryType = UITableViewCellAccessoryDetailButton;
-            
-        }
-        else {
-            cell.textLabel.text = @"Some Detail";
+            cell.accessoryType = UITableViewCellAccessoryCheckmark;
         }
     }
     else {
@@ -180,8 +229,8 @@ typedef enum { Switch, Dropdown } SettingUIType;
         if ([self.expandedSections containsIndex:section]) {
             NSArray *settings = self.settingSections[section][@"settings"];
             NSDictionary* setting = settings[0];
-            NSNumber* count = setting[@"count"];
-            return [count unsignedIntValue];
+            NSString* key = setting[@"key"];
+            return [self countDropdownOptionsBySettingKey:key];
         }
 
         return 1; // Show only first row when collapsed (current setting).
