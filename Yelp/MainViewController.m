@@ -57,6 +57,7 @@
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [button addTarget:self action:@selector(showFilerView) forControlEvents:UIControlEventTouchUpInside];
     [button setTitle:@"Filter" forState:UIControlStateNormal];
+    
     button.frame = CGRectMake(80.0, 10.0, 60.0, 40.0);
     
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithCustomView:button];

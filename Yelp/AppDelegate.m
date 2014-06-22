@@ -20,10 +20,11 @@
     MainViewController *vc = [[MainViewController alloc] init];
     UINavigationController *nvc = [[UINavigationController alloc]initWithRootViewController:vc];
     
-    [[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(0xCF1806)];
-    
+    [[UINavigationBar appearance] setBarTintColor:UIColorFromRGB(0xCF1806)];    
+    nvc.navigationBar.tintColor = [UIColor whiteColor];
+
     [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
-                                                           [UIColor colorWithRed:32.0/255.0 green:139.0/255.0 blue:254.0/255.0 alpha:1.0], NSForegroundColorAttributeName,
+                                                           [UIColor whiteColor], NSForegroundColorAttributeName,
                                                            [UIFont fontWithName:@"Arial" size:21.0], NSFontAttributeName, nil]];
 
     self.window.rootViewController = nvc;

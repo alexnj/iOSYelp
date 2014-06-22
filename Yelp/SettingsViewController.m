@@ -39,7 +39,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
     // Initialize expanded sections set.
     self.expandedSections = [[NSMutableIndexSet alloc] init];
     self.defaults = [NSUserDefaults standardUserDefaults];
-    
+        
     self.settingSections = @[
                                 @{
                                         @"caption": @"Category",
