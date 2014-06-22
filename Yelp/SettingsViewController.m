@@ -106,14 +106,43 @@ typedef enum { Switch, Dropdown } SettingUIType;
     dispatch_once(&onceToken, ^{
         _options = @[
                      @{ @"key": @"", @"caption": @"Auto" },
-                     @{ @"key": @"300", @"caption": @"0.3 miles" },
-                     @{ @"key": @"1000", @"caption": @"1 mile" },
-                     @{ @"key": @"5000", @"caption": @"5 miles" },
-                     @{ @"key": @"20000", @"caption": @"20 miles" }
+                     @{ @"key": @"482", @"caption": @"0.3 miles" },
+                     @{ @"key": @"1609", @"caption": @"1 mile" },
+                     @{ @"key": @"8046", @"caption": @"5 miles" },
+                     @{ @"key": @"32186", @"caption": @"20 miles" }
                      ];
     });
     return _options;
 }
+
++ (NSArray *)categoryOptions
+{
+    static NSArray* _options;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _options = @[
+                     @{@"key": @"", @"caption": @"All"},
+                     @{@"key": @"active", @"caption": @"Active Life"},
+                     @{@"key": @"arts", @"caption": @"Arts & Entertainment"},
+                     @{@"key": @"auto", @"caption": @"Automotive"},
+                     @{@"key": @"beautysvc", @"caption": @"Beauty & Spas"},
+                     @{@"key": @"education", @"caption": @"Education"},
+                     @{@"key": @"eventservices", @"caption": @"Event Planning & Services"},
+                     @{@"key": @"financialservices", @"caption": @"Financial Services"},
+                     @{@"key": @"food", @"caption": @"Food"},
+                     @{@"key": @"health", @"caption": @"Health & Medical"},
+                     @{@"key": @"diagnosticservices", @"caption": @"Diagnostic Services"},
+                     @{@"key": @"physicians", @"caption": @"Doctors"},
+                     @{@"key": @"homeservices", @"caption": @"Home Services"},
+                     @{@"key": @"hotelstravel", @"caption": @"Hotels & Travel"},
+                     @{@"key": @"nightlife", @"caption": @"Nightlife"},
+                     @{@"key": @"restaurants", @"caption": @"Restaurants"},
+                     @{@"key": @"shopping", @"caption": @"Shopping"}
+                     ];
+    });
+    return _options;
+}
+
 
 - (NSInteger)countDropdownOptionsBySettingKey: (NSString*)key {
     NSInteger count = 0;
@@ -127,7 +156,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
     }
     
     if ([key isEqualToString:@"category"]) {
-        count = [[self class] sortOptions].count;
+        count = [[self class] categoryOptions].count;
     }
     
     return count;
@@ -145,7 +174,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
     }
     
     if ([key isEqualToString:@"category"]) {
-        options = [[self class] sortOptions];
+        options = [[self class] categoryOptions];
     }
     
     return options;
