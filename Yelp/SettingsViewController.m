@@ -16,6 +16,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
 @property (strong, nonatomic) NSArray *settingSections;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableIndexSet *expandedSections;
+@property (strong, nonatomic) NSMutableDictionary *savedSettings;
 @end
 
 @implementation SettingsViewController
@@ -35,6 +36,9 @@ typedef enum { Switch, Dropdown } SettingUIType;
     
     // Initialize expanded sections set.
     self.expandedSections = [[NSMutableIndexSet alloc] init];
+    self.savedSettings = [[NSMutableDictionary alloc] init];
+    
+    _savedSettings[@"sort"] = @1;
     
     self.settingSections = @[
                                 @{
@@ -134,16 +138,14 @@ typedef enum { Switch, Dropdown } SettingUIType;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     // Is the current section a collapsible one?
     if ([self tableView:tableView canCollapseSection:indexPath.section]) {
+        NSInteger section = indexPath.section;
 
-        // Is this the first row that was selected?
-        if (!indexPath.row) {
-            NSInteger section = indexPath.section;
-        
-            // only first row toggles exapand/collapse
-            [tableView deselectRowAtIndexPath:indexPath animated:YES];
+        // Is this already collapsed? Then expand.
+        if (![self.expandedSections containsIndex:indexPath.section]) {
             
             // Calculate final number of rows depending on current state.
             NSInteger rows;
@@ -164,8 +166,6 @@ typedef enum { Switch, Dropdown } SettingUIType;
                 [tmpArray addObject:tmpIndexPath];
             }
             
-            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-            
             // Expand or remove rows as necessary.
             if (isCurrentlyExpanded) {
                 [tableView deleteRowsAtIndexPaths:tmpArray
@@ -174,9 +174,57 @@ typedef enum { Switch, Dropdown } SettingUIType;
             else {
                 [tableView insertRowsAtIndexPaths:tmpArray
                                  withRowAnimation:UITableViewRowAnimationTop];
+
+                // Refresh row to update setting.
+                [self.tableView beginUpdates];
+                NSIndexPath *tmpIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
+                [self.tableView reloadRowsAtIndexPaths:@[tmpIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [self.tableView endUpdates];
+
             }
         }
+        else {
+            // Expanded section. Means we have a new preference.
+
+            // Current selection?
+            UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+            NSString* caption = cell.textLabel.text;
+            
+            // Which setting are we catering to?
+            NSDictionary* setting = self.settingSections[indexPath.section][@"settings"][0];
+            NSString* settingKey = setting[@"key"];
+            NSArray* options = [self dropdownOptionsBySettingKey:settingKey];
+
+            for(NSDictionary* optionPair in options) {
+                if ([optionPair[@"caption"] isEqualToString:caption]) {
+                    [self.savedSettings setObject:optionPair[@"key"] forKey:settingKey];
+                    NSLog(@"Selected %@", self.savedSettings);
+                }
+            }
+            
+            NSInteger rows;
+            rows = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+            [self.expandedSections removeIndex:section];
+            // Prepare row indices for insertion (expansion).
+            NSMutableArray *tmpArray = [NSMutableArray array];
+            for (int i=1; i<rows; i++) {
+                NSIndexPath *tmpIndexPath = [NSIndexPath indexPathForRow:i inSection:section];
+                [tmpArray addObject:tmpIndexPath];
+            }
+            
+            // Expand or remove rows as necessary.
+            [tableView deleteRowsAtIndexPaths:tmpArray
+                                 withRowAnimation:UITableViewRowAnimationTop];
+
+            
+            // Refresh row to update setting.
+            [self.tableView beginUpdates];
+            NSIndexPath *tmpIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
+            [self.tableView reloadRowsAtIndexPaths:@[tmpIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView endUpdates];
+        }
     }
+    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -208,11 +256,31 @@ typedef enum { Switch, Dropdown } SettingUIType;
     NSArray* options = [self dropdownOptionsBySettingKey:settingKey];
     
     if ([self tableView:tableView canCollapseSection:indexPath.section]) {
-        cell.textLabel.text = options[indexPath.row][@"caption"];
-        if (!indexPath.row) {
-            // First row.
-            cell.accessoryView = nil;
-            cell.accessoryType = UITableViewCellAccessoryCheckmark;
+        if (![self.expandedSections containsIndex:indexPath.section]) {
+            // Collapsed stage. Show current setting.
+            NSLog(@"Saved setting should be shown %@", self.savedSettings[settingKey]);
+            if( self.savedSettings[settingKey] != nil){
+                for(NSDictionary* optionPair in options) {
+                    if ([optionPair[@"key"] isEqualToNumber:self.savedSettings[settingKey]]) {
+                        NSLog(@"Selected option resurface %@", optionPair);
+                        cell.textLabel.text = optionPair[@"caption"];
+
+                        cell.accessoryView = nil;
+                        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                    }
+                }
+            }
+        }
+        else {
+            cell.textLabel.text = options[indexPath.row][@"caption"];
+            if ([options[indexPath.row][@"key"] isEqualToNumber:self.savedSettings[settingKey]]) {
+                cell.accessoryView = nil;
+                cell.accessoryType = UITableViewCellAccessoryCheckmark;
+            }
+            else {
+                cell.accessoryView = nil;
+                cell.accessoryType = UITableViewCellAccessoryNone;
+            }
         }
     }
     else {
