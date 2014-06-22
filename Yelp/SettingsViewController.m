@@ -178,7 +178,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
                 // Refresh row to update setting.
                 [self.tableView beginUpdates];
                 NSIndexPath *tmpIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
-                [self.tableView reloadRowsAtIndexPaths:@[tmpIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+                [self.tableView reloadRowsAtIndexPaths:@[tmpIndexPath] withRowAnimation:UITableViewRowAnimationFade];
                 [self.tableView endUpdates];
 
             }
@@ -220,7 +220,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
             // Refresh row to update setting.
             [self.tableView beginUpdates];
             NSIndexPath *tmpIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
-            [self.tableView reloadRowsAtIndexPaths:@[tmpIndexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [self.tableView reloadRowsAtIndexPaths:@[tmpIndexPath] withRowAnimation:UITableViewRowAnimationFade];
             [self.tableView endUpdates];
         }
     }
@@ -264,22 +264,24 @@ typedef enum { Switch, Dropdown } SettingUIType;
                     if ([optionPair[@"key"] isEqualToNumber:self.savedSettings[settingKey]]) {
                         NSLog(@"Selected option resurface %@", optionPair);
                         cell.textLabel.text = optionPair[@"caption"];
-
+                        
                         cell.accessoryView = nil;
-                        cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     }
                 }
             }
         }
         else {
             cell.textLabel.text = options[indexPath.row][@"caption"];
-            if ([options[indexPath.row][@"key"] isEqualToNumber:self.savedSettings[settingKey]]) {
-                cell.accessoryView = nil;
-                cell.accessoryType = UITableViewCellAccessoryCheckmark;
-            }
-            else {
-                cell.accessoryView = nil;
-                cell.accessoryType = UITableViewCellAccessoryNone;
+            if( self.savedSettings[settingKey] != nil){
+                if ([options[indexPath.row][@"key"] isEqualToNumber:self.savedSettings[settingKey]]) {
+                    cell.accessoryView = nil;
+                    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+                }
+                else {
+                    cell.accessoryView = nil;
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                }
             }
         }
     }
