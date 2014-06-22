@@ -8,6 +8,7 @@
             <connections>
                 <outlet property="cellTypeSegmented" destination="PmD-vP-jRh" id="Oiq-bH-IGP"/>
                 <outlet property="cellTypeSwitch" destination="xBI-pB-J0v" id="Ji9-c4-4Kh"/>
+                <outlet property="tableView" destination="T42-hb-lpZ" id="aDw-yq-VOD"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
