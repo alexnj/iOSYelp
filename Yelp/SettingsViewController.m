@@ -16,7 +16,6 @@ typedef enum { Switch, Dropdown } SettingUIType;
 @property (strong, nonatomic) NSArray *settingSections;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableIndexSet *expandedSections;
-@property (strong, nonatomic) NSMutableDictionary *savedSettings;
 @property (strong, nonatomic) NSUserDefaults* defaults;
 @end
 
@@ -37,10 +36,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
     
     // Initialize expanded sections set.
     self.expandedSections = [[NSMutableIndexSet alloc] init];
-    self.savedSettings = [[NSMutableDictionary alloc] init];
     self.defaults = [NSUserDefaults standardUserDefaults];
-    
-    _savedSettings[@"sort"] = @1;
     
     self.settingSections = @[
                                 @{
@@ -200,9 +196,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
             for(NSDictionary* optionPair in options) {
                 if ([optionPair[@"caption"] isEqualToString:caption]) {
                     [self.defaults setObject:optionPair[@"key"] forKey:settingKey];
-//                    [self.savedSettings setObject:optionPair[@"key"] forKey:settingKey];
                     [self.defaults synchronize];
-                    NSLog(@"Selected %@", self.savedSettings);
                 }
             }
             
