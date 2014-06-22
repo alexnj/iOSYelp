@@ -75,6 +75,7 @@
     self.tableView.dataSource = self;
     
     self.tableView.rowHeight = 95;
+    self.searchDisplayController.searchResultsTableView.rowHeight = 95;
     
     [self loadData];
     
