@@ -1,5 +1,5 @@
 # iosYelp
-Time spent on this exercise is about 14 hours.
+Time spent on this exercise is about 16 hours.
 
 ## User stories
 
