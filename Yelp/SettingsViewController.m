@@ -13,6 +13,8 @@ typedef enum { Switch, Dropdown } SettingUIType;
 @interface SettingsViewController ()
 @property (strong, nonatomic) IBOutlet UITableViewCell *cellTypeSegmented;
 @property (strong, nonatomic) IBOutlet UITableViewCell *cellTypeSwitch;
+@property (strong, nonatomic) IBOutlet UILabel *cellTypeSwitchLabel;
+@property (strong, nonatomic) IBOutlet UISwitch *cellTypeSwitchBoolean;
 @property (strong, nonatomic) NSArray *settingSections;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableIndexSet *expandedSections;
@@ -270,6 +272,14 @@ typedef enum { Switch, Dropdown } SettingUIType;
     
 }
 
+- (void)switchItemTurned:(UISwitch *)theSwitch
+{
+    BOOL flag = theSwitch.on;
+    [self.defaults setObject:flag ? @"1" : @"0" forKey:@"deals"];
+    [self.defaults synchronize];
+}
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Check if this is asking for a collapsible section's row.
@@ -279,6 +289,9 @@ typedef enum { Switch, Dropdown } SettingUIType;
         NSNumber* settingType = setting[@"type"];
         switch ([settingType intValue]) {
             case Switch:
+                self.cellTypeSwitchLabel.text = setting[@"caption"];
+                [self.cellTypeSwitchBoolean setOn:[[self.defaults objectForKey:setting[@"key"]] boolValue]];
+                [self.cellTypeSwitchBoolean addTarget:self action:@selector(switchItemTurned:) forControlEvents:UIControlEventValueChanged];
                 return self.cellTypeSwitch;
                 break;
         }

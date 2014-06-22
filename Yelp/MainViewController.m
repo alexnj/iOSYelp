@@ -31,9 +31,7 @@
 
 - (void)loadData
 {
-    
-    
-    [self.client searchWithTerm:@"" sort:[self.defaults objectForKey:@"sort"] category:[self.defaults objectForKey:@"category"] radius:[self.defaults objectForKey:@"radius"] success:^(AFHTTPRequestOperation *operation, NSDictionary* data) {
+    [self.client searchWithTerm:@"" sort:[self.defaults objectForKey:@"sort"] category:[self.defaults objectForKey:@"category"] radius:[self.defaults objectForKey:@"radius"] deals:[self.defaults objectForKey:@"deals"] success:^(AFHTTPRequestOperation *operation, NSDictionary* data) {
         self.businessArray = data[@"businesses"];
         NSLog(@"businessArray, %@", self.businessArray);
                 NSLog(@"count, %d", self.businessArray.count);
