@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "YelpClient.h"
+#import "TableViewCell.h"
+#import "SettingsViewController.h"
 
 @interface MainViewController : UIViewController <UITableViewDataSource,UITableViewDelegate, UISearchDisplayDelegate>
 

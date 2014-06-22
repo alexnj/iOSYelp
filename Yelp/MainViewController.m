@@ -7,9 +7,7 @@
 //
 
 #import "MainViewController.h"
-#import "TableViewCell.h"
-#import "YelpClient.h"
-#import "SettingsViewController.h"
+
 
 @interface MainViewController ()
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
