@@ -17,6 +17,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) NSMutableIndexSet *expandedSections;
 @property (strong, nonatomic) NSMutableDictionary *savedSettings;
+@property (strong, nonatomic) NSUserDefaults* defaults;
 @end
 
 @implementation SettingsViewController
@@ -37,6 +38,7 @@ typedef enum { Switch, Dropdown } SettingUIType;
     // Initialize expanded sections set.
     self.expandedSections = [[NSMutableIndexSet alloc] init];
     self.savedSettings = [[NSMutableDictionary alloc] init];
+    self.defaults = [NSUserDefaults standardUserDefaults];
     
     _savedSettings[@"sort"] = @1;
     
@@ -197,7 +199,9 @@ typedef enum { Switch, Dropdown } SettingUIType;
 
             for(NSDictionary* optionPair in options) {
                 if ([optionPair[@"caption"] isEqualToString:caption]) {
-                    [self.savedSettings setObject:optionPair[@"key"] forKey:settingKey];
+                    [self.defaults setObject:optionPair[@"key"] forKey:settingKey];
+//                    [self.savedSettings setObject:optionPair[@"key"] forKey:settingKey];
+                    [self.defaults synchronize];
                     NSLog(@"Selected %@", self.savedSettings);
                 }
             }
@@ -258,10 +262,9 @@ typedef enum { Switch, Dropdown } SettingUIType;
     if ([self tableView:tableView canCollapseSection:indexPath.section]) {
         if (![self.expandedSections containsIndex:indexPath.section]) {
             // Collapsed stage. Show current setting.
-            NSLog(@"Saved setting should be shown %@", self.savedSettings[settingKey]);
-            if( self.savedSettings[settingKey] != nil){
+            if( [self.defaults objectForKey:settingKey] != nil){
                 for(NSDictionary* optionPair in options) {
-                    if ([optionPair[@"key"] isEqualToNumber:self.savedSettings[settingKey]]) {
+                    if ([optionPair[@"key"] isEqualToNumber:[self.defaults objectForKey:settingKey]]) {
                         NSLog(@"Selected option resurface %@", optionPair);
                         cell.textLabel.text = optionPair[@"caption"];
                         
@@ -273,8 +276,8 @@ typedef enum { Switch, Dropdown } SettingUIType;
         }
         else {
             cell.textLabel.text = options[indexPath.row][@"caption"];
-            if( self.savedSettings[settingKey] != nil){
-                if ([options[indexPath.row][@"key"] isEqualToNumber:self.savedSettings[settingKey]]) {
+            if( [self.defaults objectForKey:settingKey] != nil){
+                if ([options[indexPath.row][@"key"] isEqualToNumber:[self.defaults objectForKey:settingKey]]) {
                     cell.accessoryView = nil;
                     cell.accessoryType = UITableViewCellAccessoryCheckmark;
                 }
