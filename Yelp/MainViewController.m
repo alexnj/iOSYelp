@@ -15,6 +15,7 @@
 @property (nonatomic, strong) YelpClient *client;
 @property (nonatomic, strong) NSMutableArray *businessArray;
 @property (nonatomic, strong) NSArray *searchResults;
+@property (strong, nonatomic) NSUserDefaults* defaults;
 @end
 
 @implementation MainViewController
@@ -30,7 +31,9 @@
 
 - (void)loadData
 {
-    [self.client searchWithTerm:@"Thai" success:^(AFHTTPRequestOperation *operation, NSDictionary* data) {
+    
+    
+    [self.client searchWithTerm:@"" sort:[self.defaults objectForKey:@"sort"] category:[self.defaults objectForKey:@"category"] radius:[self.defaults objectForKey:@"radius"] success:^(AFHTTPRequestOperation *operation, NSDictionary* data) {
         self.businessArray = data[@"businesses"];
         NSLog(@"businessArray, %@", self.businessArray);
                 NSLog(@"count, %d", self.businessArray.count);
@@ -41,6 +44,10 @@
         NSLog(@"error: %@", [error description]);
     }];
     
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self loadData];
 }
 
 - (void)showFilerView {
@@ -61,6 +68,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.defaults = [NSUserDefaults standardUserDefaults];
     
     // Point table view data source and delegates to this class itself.
     self.tableView.delegate = self;
@@ -108,7 +117,9 @@
     }
     
     NSLog(@"row: %@", business);
-    cell.row = business;
+    if (business!=nil) {
+        cell.row = business;
+    }
     
     return cell;
 }

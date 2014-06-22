@@ -9,12 +9,12 @@
 #import "TableViewCell.h"
 
 @interface TableViewCell ()
-@property (weak, nonatomic) IBOutlet UILabel *address;
-@property (weak, nonatomic) IBOutlet UIImageView *thumbnail;
-@property (weak, nonatomic) IBOutlet UIImageView *ratingImage;
-@property (weak, nonatomic) IBOutlet UILabel *title;
-@property (weak, nonatomic) IBOutlet UILabel *distance;
-@property (weak, nonatomic) IBOutlet UILabel *expense;
+@property (strong, nonatomic) IBOutlet UILabel *address;
+@property (strong, nonatomic) IBOutlet UIImageView *thumbnail;
+@property (strong, nonatomic) IBOutlet UIImageView *ratingImage;
+@property (strong, nonatomic) IBOutlet UILabel *title;
+@property (strong, nonatomic) IBOutlet UILabel *distance;
+@property (strong, nonatomic) IBOutlet UILabel *expense;
 @end
 
 @implementation TableViewCell
@@ -33,7 +33,7 @@
 
 - (void)setRow:(NSDictionary *)row {
     self.title.text = row[@"name"];
-    self.address.text = row[@"location"][@"address"][0];
+    self.address.text = row[@"location"][@"display_address"][0];
     self.distance.text = [NSString stringWithFormat:@"%@", row[@"review_count"]];
     self.expense.text = @"";
     
