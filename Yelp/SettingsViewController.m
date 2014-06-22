@@ -9,7 +9,8 @@
 #import "SettingsViewController.h"
 
 @interface SettingsViewController ()
-
+@property (strong, nonatomic) IBOutlet UITableViewCell *cellTypeSegmented;
+@property (strong, nonatomic) IBOutlet UITableViewCell *cellTypeSwitch;
 @end
 
 @implementation SettingsViewController
@@ -33,6 +34,20 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == 0) return self.cellTypeSegmented;
+    if (indexPath.row == 1) return self.cellTypeSwitch;
+    return nil;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return 2;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
 }
 
 @end
