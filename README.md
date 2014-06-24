@@ -20,6 +20,7 @@ Time spent on this exercise is about 16 hours.
   * [ ] Optional: Implement the restaurant detail page.
 
 ## Demo
+![demo](screencast.gif)
 
 ## Pods imported
 * AFNetworking
